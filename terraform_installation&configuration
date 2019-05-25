@@ -1,0 +1,56 @@
+Install Terraform:
+=====================================================================================================================================================
+
+Install the required binary package (depending upon your OS) from  https://www.terraform.io/downloads.html. Then Unzip the .zip file to the bin directory as as per the your OS
+
+## unzip terraform_0.7.2_darwin_amd64.zip -d /usr/local/bin
+
+Type terraform command to see if the command is available or not
+
+Writing Configuration File:
+=====================================================================================================================================================
+
+Make a terraform directory in which we will keep our files. Name of this directory could be anything you want.
+ ## mkdir ~/terraform
+ ## cd ~/terraform
+
+Here an example is given for launching an ec2 instance.The file could be in json format or in *.tf format.
+ 
+ ## vim launch_instance.tf
+Put the following configurations in the file:
+          provider "aws" {
+        access_key = "XXXXXXXXXXXXXXXX"
+        secret_key = "XXXXXXXXXXXXXXXXXXXXXX"
+        region = "ap-southeast-1"
+}
+
+resource "aws_instance" "example" {
+        ami = "ami-a59b49c6"
+        instance_type = "t2.micro"
+        key_name = "mykey"
+        security_groups= ["sample-sg"]
+        tags {
+         Name = "terraform-instance"
+        }
+}
+
+Replace the access_key and secret_key and other AWS parameters as per your need.
+
+Now run terraform plan to see what terraform will if the above file is executed.
+
+  ## terraform plan
+Now run the command terraform apply to run the above file
+  ## terraform apply
+Now check AWS, the instance is launched. This is the power of Terraform, on a single command you can build the entire infrastructure.
+
+*****we have given an aws infrastructure with terraform |VPC| |public subnet| |internet gateway| |security group| |Ec2 insatance| in another files***
+
+Note:  File to store global variables (variables.tf) 
+Note:  Set provider to AWS (provider.tf)
+Note:  Creating VPC, Subnets, Internet Gateway, Route Table, Security Groups (vpc.tf)
+Note:  Creating Instances (resources.tf)
+
+Finally after creating these files in a folder, you can run "terraform plan" inside terraform directory to see what all resources will be created. This will simply tell you what all resources would be created instead of actually creating them. Run "terraform apply" to actually create these resources.
+
+Refference: https://jee-appy.blogspot.com/2018/07/create-aws-infrastructure-with-terraform.html
+
